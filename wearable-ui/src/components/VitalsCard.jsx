@@ -1,17 +1,22 @@
+import React from "react";
+import VitalsChart from "./VitalsChart";
+
 export default function VitalsCard({ patient, vitals }) {
+  if (!patient) return null;
+
+  const latest = vitals[vitals.length - 1];
+
   return (
-    <div>
-      <h2>{patient.name} Vitals</h2>
-      {vitals.length === 0 ? (
-        <p>No data yet</p>
+    <div className="vitals-card">
+      <h2>{patient.name}</h2>
+      {latest ? (
+        <>
+          <p>❤️ Heart Rate: <strong>{latest.hr}</strong> bpm</p>
+          <p>🩸 SpO₂: <strong>{latest.spo2}</strong>%</p>
+          <VitalsChart vitals={vitals} />
+        </>
       ) : (
-        <ul>
-          {vitals.map((v, i) => (
-            <li key={i}>
-              HR: {v.hr} | SpO2: {v.spo2} | Timestamp: {v.ts}
-            </li>
-          ))}
-        </ul>
+        <p>No data yet...</p>
       )}
     </div>
   );

@@ -66,3 +66,14 @@ main {
 ul li {
   margin-bottom: 4px;
 }
+
+.vitals-card {
+  background: #ffffffcc;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.vitals-chart {
+  margin-top: 15px;
+}
