@@ -12,18 +12,20 @@ const initialPatients = [
 
 export default function App() {
   const [patients] = useState(initialPatients);
-  const [selected, setSelected] = useState(initialPatients[0]);
+
+  // vitals map: { "P001": [...], "P002": [...], ... }
   const [vitalsByPatient, setVitalsByPatient] = useState(() => {
     const map = {};
     initialPatients.forEach(p => (map[p.id] = []));
     return map;
   });
+
   const [alerts, setAlerts] = useState([]);
 
   useEffect(() => {
     const stop = startMockStream((deviceId, sample) => {
       setVitalsByPatient(prev => {
-        const arr = (prev[deviceId] || []).slice(-119); // keep ~2 minutes of samples
+        const arr = (prev[deviceId] || []).slice(-119);
         arr.push(sample);
         return { ...prev, [deviceId]: arr };
       });
@@ -39,16 +41,16 @@ export default function App() {
     return () => stop();
   }, []);
 
-  const selectedVitals = vitalsByPatient[selected.id] || [];
-
   return (
     <div className="app">
-      <aside>
-        <PatientList patients={patients} selected={selected} onSelect={setSelected} />
-      </aside>
-
-      <main>
-        <VitalsCard patient={selected} vitals={selectedVitals} />
+      <main style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
+        {patients.map(p => (
+          <VitalsCard 
+            key={p.id} 
+            patient={p} 
+            vitals={vitalsByPatient[p.id] || []}
+          />
+        ))}
       </main>
 
       <aside className="right">
