@@ -1,8 +1,6 @@
-export function startMockStream(callback) {
-  const patientIds = ["P001", "P002", "P003"]; // all patients you simulate
-
+export function startMockStream(watches, callback) {
   const interval = setInterval(() => {
-    patientIds.forEach(deviceId => {
+    watches.forEach(deviceId => {
       const sample = {
         ts: new Date().toISOString(),
         hr: 60 + Math.floor(Math.random() * 40),   // 60–100
